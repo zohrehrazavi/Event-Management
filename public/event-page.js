@@ -422,11 +422,7 @@ function populateAllFields(event) {
 
 // Set up custom upload fields
 function setupCustomUploadFields() {
-    console.log('Setting up custom upload fields...');
-    if (!currentEvent || !currentEvent.custom_fields) {
-        console.log('No current event or custom fields found');
-        return;
-    }
+    if (!currentEvent || !currentEvent.custom_fields) return;
     
     Object.entries(currentEvent.custom_fields).forEach(([fieldName, fieldConfig]) => {
         const fieldType = typeof fieldConfig === 'string' ? fieldConfig : fieldConfig.type;
@@ -436,8 +432,6 @@ function setupCustomUploadFields() {
             const fileInput = document.getElementById(fieldId);
             const uploadArea = document.getElementById(`customUploadArea_${fieldId}`);
             const fileList = document.getElementById(`fileList_${fieldId}`);
-            
-            console.log(`Setting up upload field: ${fieldName}`, { fieldId, fileInput, uploadArea, fileList });
             
             if (fileInput && uploadArea && fileList) {
                 // Set up drag and drop
@@ -596,6 +590,8 @@ function processFiles(files) {
 
 // Update file list display
 function updateFileList() {
+    if (!fileList) return; // Don't update if fileList doesn't exist
+    
     if (selectedFiles.length === 0) {
         fileList.innerHTML = '<p class="no-files">No files selected</p>';
         return;

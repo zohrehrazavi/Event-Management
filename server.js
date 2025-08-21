@@ -228,7 +228,26 @@ app.post('/api/events', async (req, res) => {
 app.post('/api/events/:id/register', upload.any(), async (req, res) => {
   try {
     const { id } = req.params;
-    const { first_name, last_name, email, phone, company, position, custom_data } = req.body;
+    const { custom_data } = req.body;
+    
+    // Parse custom_data if it's a string
+    let parsedCustomData = {};
+    if (custom_data && custom_data !== '') {
+      try {
+        parsedCustomData = typeof custom_data === 'string' ? JSON.parse(custom_data) : custom_data;
+      } catch (e) {
+        console.error('Error parsing custom_data:', e);
+        parsedCustomData = {};
+      }
+    }
+    
+    // Extract common fields for admin display (optional)
+    const first_name = parsedCustomData['Full Name'] || parsedCustomData['Name'] || parsedCustomData['First Name'] || null;
+    const last_name = parsedCustomData['Last Name'] || null;
+    const email = parsedCustomData['Email'] || parsedCustomData['Email Address'] || null;
+    const phone = parsedCustomData['Phone'] || parsedCustomData['Phone Number'] || null;
+    const company = parsedCustomData['Company'] || null;
+    const position = parsedCustomData['Position'] || parsedCustomData['Job Title'] || null;
     
     // Check if event exists and has capacity
     const eventResult = await pool.query(`
@@ -276,16 +295,7 @@ app.post('/api/events/:id/register', upload.any(), async (req, res) => {
       });
     }
     
-    // Parse custom_data if it's a string
-    let parsedCustomData = {};
-    if (custom_data && custom_data !== '') {
-      try {
-        parsedCustomData = typeof custom_data === 'string' ? JSON.parse(custom_data) : custom_data;
-      } catch (e) {
-        console.error('Error parsing custom_data:', e);
-        parsedCustomData = {};
-      }
-    }
+
     
     // Add custom files to custom data
     Object.entries(customFiles).forEach(([fieldName, files]) => {

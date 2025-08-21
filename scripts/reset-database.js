@@ -18,32 +18,42 @@ async function resetDatabase() {
         console.log('Existing tables dropped successfully');
         
         // Create tables with new schema
-                       await client.query(`
-                   CREATE TABLE IF NOT EXISTS events (
-                       id SERIAL PRIMARY KEY,
-                       title VARCHAR(255) NOT NULL,
-                       description TEXT,
-                       event_date DATE NOT NULL,
-                       event_time TIME NOT NULL,
-                       location VARCHAR(255),
-                       max_attendees INTEGER DEFAULT 100,
-                       event_kv JSONB DEFAULT '{}',
-                       access_code VARCHAR(255),
-                       is_exclusive BOOLEAN DEFAULT false,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                   )
-               `);
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS events (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                description TEXT,
+                agenda TEXT,
+                event_date DATE NOT NULL,
+                event_time TIME NOT NULL,
+                location VARCHAR(255),
+                max_attendees INTEGER DEFAULT 100,
+                current_attendees INTEGER DEFAULT 0,
+                event_kv VARCHAR(500),
+                custom_fields JSONB DEFAULT '{}',
+                access_code VARCHAR(255),
+                is_exclusive BOOLEAN DEFAULT false,
+                allow_documents BOOLEAN DEFAULT false,
+                allowed_file_types TEXT[],
+                max_file_size INTEGER DEFAULT 5,
+                max_files INTEGER DEFAULT 5,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
 
         await client.query(`
             CREATE TABLE IF NOT EXISTS attendees (
                 id SERIAL PRIMARY KEY,
                 event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                email VARCHAR(255),
                 phone VARCHAR(50),
                 company VARCHAR(255),
                 position VARCHAR(255),
+                custom_data JSONB DEFAULT '{}',
                 documents TEXT[],
+                registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);

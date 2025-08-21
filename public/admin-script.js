@@ -191,33 +191,55 @@ async function loadAttendees() {
 function displayAttendeesTable(attendees) {
     const tbody = document.getElementById('attendeesTableBody');
     
-    tbody.innerHTML = attendees.map(attendee => `
-        <tr>
-            <td>
-                <strong>${attendee.first_name} ${attendee.last_name}</strong>
-            </td>
-            <td>${attendee.email}</td>
-            <td>${getEventTitle(attendee.event_id)}</td>
-            <td>${attendee.company || 'N/A'}</td>
-            <td>${formatDate(attendee.registration_date)}</td>
-            <td>
-                ${attendee.documents && attendee.documents.length > 0 
-                    ? `<span class="document-count">${attendee.documents.length} files</span>`
-                    : 'No documents'
-                }
-            </td>
-            <td>
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="viewAttendeeDetails(${attendee.id})">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteAttendee(${attendee.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = attendees.map(attendee => {
+        // Get display name from custom data or standard fields
+        let displayName = 'Anonymous';
+        if (attendee.first_name && attendee.last_name) {
+            displayName = `${attendee.first_name} ${attendee.last_name}`;
+        } else if (attendee.first_name) {
+            displayName = attendee.first_name;
+        } else if (attendee.custom_data) {
+            const customData = typeof attendee.custom_data === 'string' ? JSON.parse(attendee.custom_data) : attendee.custom_data;
+            displayName = customData['Full Name'] || customData['Name'] || customData['First Name'] || 'Anonymous';
+        }
+        
+        // Get email from custom data or standard field
+        let displayEmail = attendee.email || 'No email';
+        if (!displayEmail || displayEmail === 'No email') {
+            if (attendee.custom_data) {
+                const customData = typeof attendee.custom_data === 'string' ? JSON.parse(attendee.custom_data) : attendee.custom_data;
+                displayEmail = customData['Email'] || customData['Email Address'] || 'No email';
+            }
+        }
+        
+        return `
+            <tr>
+                <td>
+                    <strong>${displayName}</strong>
+                </td>
+                <td>${displayEmail}</td>
+                <td>${getEventTitle(attendee.event_id)}</td>
+                <td>${attendee.company || 'N/A'}</td>
+                <td>${formatDate(attendee.registration_date)}</td>
+                <td>
+                    ${attendee.documents && attendee.documents.length > 0 
+                        ? `<span class="document-count">${attendee.documents.length} files</span>`
+                        : 'No documents'
+                    }
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="viewAttendeeDetails(${attendee.id})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteAttendee(${attendee.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 // Load vendors
@@ -444,15 +466,37 @@ async function viewEventDetails(eventId) {
         // Populate attendees tab
         const attendeesList = document.getElementById('eventAttendeesList');
         if (attendees && Array.isArray(attendees)) {
-            attendeesList.innerHTML = attendees.length > 0 ? attendees.map(attendee => `
-                <div class="list-item">
-                    <div class="list-item-info">
-                        <h4>${attendee.first_name} ${attendee.last_name}</h4>
-                        <p>${attendee.email} • ${attendee.company || 'No company'}</p>
+            attendeesList.innerHTML = attendees.length > 0 ? attendees.map(attendee => {
+                // Get display name from custom data or standard fields
+                let displayName = 'Anonymous';
+                if (attendee.first_name && attendee.last_name) {
+                    displayName = `${attendee.first_name} ${attendee.last_name}`;
+                } else if (attendee.first_name) {
+                    displayName = attendee.first_name;
+                } else if (attendee.custom_data) {
+                    const customData = typeof attendee.custom_data === 'string' ? JSON.parse(attendee.custom_data) : attendee.custom_data;
+                    displayName = customData['Full Name'] || customData['Name'] || customData['First Name'] || 'Anonymous';
+                }
+                
+                // Get email from custom data or standard field
+                let displayEmail = attendee.email || 'No email';
+                if (!displayEmail || displayEmail === 'No email') {
+                    if (attendee.custom_data) {
+                        const customData = typeof attendee.custom_data === 'string' ? JSON.parse(attendee.custom_data) : attendee.custom_data;
+                        displayEmail = customData['Email'] || customData['Email Address'] || 'No email';
+                    }
+                }
+                
+                return `
+                    <div class="list-item">
+                        <div class="list-item-info">
+                            <h4>${displayName}</h4>
+                            <p>${displayEmail} • ${attendee.company || 'No company'}</p>
+                        </div>
+                        <span>${formatDate(attendee.registration_date)}</span>
                     </div>
-                    <span>${formatDate(attendee.registration_date)}</span>
-                </div>
-            `).join('') : '<div class="list-item"><p>No attendees registered yet</p></div>';
+                `;
+            }).join('') : '<div class="list-item"><p>No attendees registered yet</p></div>';
         } else {
             attendeesList.innerHTML = '<div class="list-item"><p>Error loading attendees</p></div>';
         }

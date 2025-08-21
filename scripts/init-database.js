@@ -25,6 +25,10 @@ async function initDatabase() {
                 custom_fields JSONB DEFAULT '{}',
                 access_code VARCHAR(255),
                 is_exclusive BOOLEAN DEFAULT false,
+                allow_documents BOOLEAN DEFAULT false,
+                allowed_file_types TEXT[],
+                max_file_size INTEGER DEFAULT 5,
+                max_files INTEGER DEFAULT 5,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -33,14 +37,15 @@ async function initDatabase() {
             CREATE TABLE IF NOT EXISTS attendees (
                 id SERIAL PRIMARY KEY,
                 event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
-                first_name VARCHAR(255) NOT NULL,
-                last_name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                email VARCHAR(255),
                 phone VARCHAR(50),
                 company VARCHAR(255),
                 position VARCHAR(255),
                 custom_data JSONB DEFAULT '{}',
                 documents TEXT[],
+                registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
