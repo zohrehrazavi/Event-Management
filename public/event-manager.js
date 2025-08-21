@@ -239,12 +239,30 @@ async function handleFormSubmit(e) {
         
         // Add custom fields
         const customFields = {};
-        const fieldNames = document.querySelectorAll('.field-name');
-        const fieldTypes = document.querySelectorAll('.field-type');
+        const fieldRows = document.querySelectorAll('.custom-field-row');
         
-        fieldNames.forEach((nameInput, index) => {
+        fieldRows.forEach((fieldRow) => {
+            const nameInput = fieldRow.querySelector('.field-name');
+            const typeSelect = fieldRow.querySelector('.field-type');
+            
             if (nameInput.value.trim()) {
-                customFields[nameInput.value.trim()] = fieldTypes[index].value;
+                const fieldName = nameInput.value.trim();
+                const fieldType = typeSelect.value;
+                
+                if (fieldType === 'upload') {
+                    // For upload fields, include configuration
+                    const maxSize = fieldRow.querySelector('.upload-max-size').value;
+                    const required = fieldRow.querySelector('.upload-required').checked;
+                    
+                    customFields[fieldName] = {
+                        type: 'upload',
+                        maxSize: parseInt(maxSize),
+                        required: required
+                    };
+                } else {
+                    // For regular fields, just store the type
+                    customFields[fieldName] = fieldType;
+                }
             }
         });
         
@@ -287,18 +305,50 @@ function addCustomField(name = '', type = 'text') {
     fieldRow.className = 'custom-field-row';
     fieldRow.innerHTML = `
         <input type="text" class="field-name" placeholder="Field name (e.g., Company, Phone)" value="${name}">
-        <select class="field-type">
+        <select class="field-type" onchange="handleFieldTypeChange(this)">
             <option value="text" ${type === 'text' ? 'selected' : ''}>Text</option>
             <option value="email" ${type === 'email' ? 'selected' : ''}>Email</option>
             <option value="tel" ${type === 'tel' ? 'selected' : ''}>Phone</option>
             <option value="url" ${type === 'url' ? 'selected' : ''}>Website</option>
             <option value="textarea" ${type === 'textarea' ? 'selected' : ''}>Long Text</option>
+            <option value="upload" ${type === 'upload' ? 'selected' : ''}>File Upload</option>
         </select>
+        
+        <!-- Upload field configuration (hidden by default) -->
+        <div class="upload-field-config" style="display: none;">
+            <div class="upload-config-row">
+                <label>Max Size (MB):</label>
+                <input type="number" class="upload-max-size" value="5" min="1" max="50" />
+            </div>
+            <div class="upload-config-row">
+                <label>Required:</label>
+                <input type="checkbox" class="upload-required" />
+            </div>
+        </div>
+        
         <button type="button" class="remove-field" onclick="removeCustomField(this)">
             <i class="fas fa-trash"></i>
         </button>
     `;
     container.appendChild(fieldRow);
+    
+    // If the type is upload, show the configuration
+    if (type === 'upload') {
+        const uploadConfig = fieldRow.querySelector('.upload-field-config');
+        uploadConfig.style.display = 'flex';
+    }
+}
+
+// Handle field type change
+function handleFieldTypeChange(selectElement) {
+    const fieldRow = selectElement.closest('.custom-field-row');
+    const uploadConfig = fieldRow.querySelector('.upload-field-config');
+    
+    if (selectElement.value === 'upload') {
+        uploadConfig.style.display = 'flex';
+    } else {
+        uploadConfig.style.display = 'none';
+    }
 }
 
 // Remove custom field

@@ -225,7 +225,7 @@ app.post('/api/events', async (req, res) => {
   }
 });
 
-app.post('/api/events/:id/register', upload.array('documents', 5), async (req, res) => {
+app.post('/api/events/:id/register', upload.any(), async (req, res) => {
   try {
     const { id } = req.params;
     const { first_name, last_name, email, phone, company, position, custom_data } = req.body;
@@ -258,8 +258,23 @@ app.post('/api/events/:id/register', upload.array('documents', 5), async (req, r
       return res.status(400).json({ error: 'Already registered for this event' });
     }
     
-    // Save documents
-    const documents = req.files ? req.files.map(file => file.filename) : [];
+    // Handle files - separate general documents from custom upload files
+    const documents = [];
+    const customFiles = {};
+    
+    if (req.files) {
+      req.files.forEach(file => {
+        if (file.fieldname === 'documents') {
+          documents.push(file.filename);
+        } else if (file.fieldname.startsWith('custom_file_')) {
+          const fieldName = file.fieldname.replace('custom_file_', '');
+          if (!customFiles[fieldName]) {
+            customFiles[fieldName] = [];
+          }
+          customFiles[fieldName].push(file.filename);
+        }
+      });
+    }
     
     // Parse custom_data if it's a string
     let parsedCustomData = {};
@@ -271,6 +286,11 @@ app.post('/api/events/:id/register', upload.array('documents', 5), async (req, r
         parsedCustomData = {};
       }
     }
+    
+    // Add custom files to custom data
+    Object.entries(customFiles).forEach(([fieldName, files]) => {
+      parsedCustomData[fieldName] = files;
+    });
     
     // Register attendee
     const attendeeResult = await pool.query(

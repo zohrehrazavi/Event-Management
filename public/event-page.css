@@ -651,3 +651,44 @@ html body .register-button .fa-spinner {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+/* Custom Upload Field Styles */
+html body .custom-upload-area {
+    border: 2px dashed #ff6b6b !important;
+    background: #fff5f5 !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    position: relative !important;
+}
+
+html body .custom-upload-area:hover {
+    border-color: #ff5252 !important;
+    background: #fff0f0 !important;
+}
+
+html body .custom-upload-area.drag-over {
+    border-color: #ff5252 !important;
+    background: #ffe0e0 !important;
+    transform: scale(1.02) !important;
+}
+
+html body .custom-upload-area input[type="file"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+}
+
+html body .custom-upload-area i {
+    color: #ff6b6b !important;
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+html body .custom-upload-area p {
+    color: #666 !important;
+    margin: 0.5rem 0 !important;
+    font-size: 0.9rem !important;
+}

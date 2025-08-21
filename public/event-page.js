@@ -328,13 +328,19 @@ function populateAllFields(event) {
     
     // Add custom fields defined by admin
     if (event.custom_fields && Object.keys(event.custom_fields).length > 0) {
-        Object.entries(event.custom_fields).forEach(([fieldName, fieldType]) => {
+        Object.entries(event.custom_fields).forEach(([fieldName, fieldConfig]) => {
             const fieldId = `field_${fieldName.toLowerCase().replace(/\s+/g, '_')}`;
             
             let inputHTML = '';
+            let isRequired = false;
+            
+            // Handle both old format (string) and new format (object)
+            const fieldType = typeof fieldConfig === 'string' ? fieldConfig : fieldConfig.type;
+            
             switch (fieldType) {
                 case 'email':
                     inputHTML = `<input type="email" id="${fieldId}" name="${fieldId}" required />`;
+                    isRequired = true;
                     break;
                 case 'tel':
                     inputHTML = `<input type="tel" id="${fieldId}" name="${fieldId}" />`;
@@ -345,13 +351,35 @@ function populateAllFields(event) {
                 case 'textarea':
                     inputHTML = `<textarea id="${fieldId}" name="${fieldId}" rows="3"></textarea>`;
                     break;
+                case 'upload':
+                    // Handle upload field with configuration
+                    const maxSize = fieldConfig.maxSize || 5;
+                    const required = fieldConfig.required || false;
+                    isRequired = required;
+                    
+                    inputHTML = `
+                        <div class="file-upload-area custom-upload-area" id="customUploadArea_${fieldId}">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag and drop files here or click to browse</p>
+                            <input
+                                type="file"
+                                id="${fieldId}"
+                                name="${fieldId}"
+                                ${required ? 'required' : ''}
+                                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                                data-max-size="${maxSize}"
+                            />
+                        </div>
+                        <div id="fileList_${fieldId}" class="file-list"></div>
+                    `;
+                    break;
                 default: // text
                     inputHTML = `<input type="text" id="${fieldId}" name="${fieldId}" />`;
             }
             
             allFieldsHTML += `
                 <div class="form-group">
-                    <label for="${fieldId}" class="required">${fieldName}</label>
+                    <label for="${fieldId}" ${isRequired ? 'class="required"' : ''}>${fieldName}</label>
                     ${inputHTML}
                 </div>
             `;
@@ -387,9 +415,134 @@ function populateAllFields(event) {
     }
     
     container.innerHTML = allFieldsHTML;
+    
+    // Set up event listeners for custom upload fields
+    setupCustomUploadFields();
 }
 
+// Set up custom upload fields
+function setupCustomUploadFields() {
+    console.log('Setting up custom upload fields...');
+    if (!currentEvent || !currentEvent.custom_fields) {
+        console.log('No current event or custom fields found');
+        return;
+    }
+    
+    Object.entries(currentEvent.custom_fields).forEach(([fieldName, fieldConfig]) => {
+        const fieldType = typeof fieldConfig === 'string' ? fieldConfig : fieldConfig.type;
+        
+        if (fieldType === 'upload') {
+            const fieldId = `field_${fieldName.toLowerCase().replace(/\s+/g, '_')}`;
+            const fileInput = document.getElementById(fieldId);
+            const uploadArea = document.getElementById(`customUploadArea_${fieldId}`);
+            const fileList = document.getElementById(`fileList_${fieldId}`);
+            
+            console.log(`Setting up upload field: ${fieldName}`, { fieldId, fileInput, uploadArea, fileList });
+            
+            if (fileInput && uploadArea && fileList) {
+                // Set up drag and drop
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('drag-over');
+                });
+                
+                uploadArea.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('drag-over');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('drag-over');
+                    const files = Array.from(e.dataTransfer.files);
+                    processCustomUploadFiles(files, fieldId, fieldConfig);
+                });
+                
+                // Set up click to browse
+                uploadArea.addEventListener('click', (e) => {
+                    // Don't trigger if clicking on the file input itself
+                    if (e.target !== fileInput) {
+                        fileInput.click();
+                    }
+                });
+                
+                // Set up file selection
+                fileInput.addEventListener('change', (e) => {
+                    const files = Array.from(e.target.files);
+                    processCustomUploadFiles(files, fieldId, fieldConfig);
+                });
+            }
+        }
+    });
+}
 
+// Process custom upload files with validation
+function processCustomUploadFiles(files, fieldId, fieldConfig) {
+    const maxSize = fieldConfig.maxSize || 5;
+    const maxSizeBytes = maxSize * 1024 * 1024; // Convert MB to bytes
+    const allowedTypes = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.gif'];
+    
+    const validFiles = files.filter(file => {
+        // Check file type
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        if (!allowedTypes.includes(fileExtension)) {
+            showNotification(`File type not allowed: ${file.name}. Allowed types: ${allowedTypes.join(', ')}`, 'error');
+            return false;
+        }
+        
+        // Check file size
+        if (file.size > maxSizeBytes) {
+            showNotification(`File too large: ${file.name} (max ${maxSize}MB)`, 'error');
+            return false;
+        }
+        
+        return true;
+    });
+    
+    // Update file list display
+    updateCustomFileList(fieldId, validFiles);
+}
+
+// Update custom file list display
+function updateCustomFileList(fieldId, files) {
+    const fileList = document.getElementById(`fileList_${fieldId}`);
+    if (!fileList) return;
+    
+    if (files.length === 0) {
+        fileList.innerHTML = '<p class="no-files">No files selected</p>';
+        return;
+    }
+    
+    fileList.innerHTML = files.map((file, index) => `
+        <div class="file-item">
+            <i class="fas fa-file"></i>
+            <span class="file-name">${file.name}</span>
+            <span class="file-size">${formatFileSize(file.size)}</span>
+            <button type="button" class="remove-file" onclick="removeCustomFile('${fieldId}', ${index})">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `).join('');
+}
+
+// Remove custom file
+function removeCustomFile(fieldId, index) {
+    const fileInput = document.getElementById(fieldId);
+    if (fileInput) {
+        // Create a new FileList without the removed file
+        const dt = new DataTransfer();
+        const files = Array.from(fileInput.files);
+        files.splice(index, 1);
+        files.forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+        
+        // Update display
+        updateCustomFileList(fieldId, files);
+    }
+}
+
+// Make function globally accessible
+window.removeCustomFile = removeCustomFile;
 
 // Handle file drag over
 function handleDragOver(e) {
@@ -483,12 +636,30 @@ async function handleRegistration(e) {
     
     // Add all dynamic fields
     const customData = {};
+    const customFiles = {};
+    
     if (currentEvent.custom_fields) {
-        Object.entries(currentEvent.custom_fields).forEach(([fieldName, fieldType]) => {
+        Object.entries(currentEvent.custom_fields).forEach(([fieldName, fieldConfig]) => {
             const fieldId = `field_${fieldName.toLowerCase().replace(/\s+/g, '_')}`;
-            const fieldValue = document.getElementById(fieldId)?.value;
-            if (fieldValue) {
-                customData[fieldName] = fieldValue;
+            const fieldElement = document.getElementById(fieldId);
+            
+            if (fieldElement) {
+                // Handle both old format (string) and new format (object)
+                const fieldType = typeof fieldConfig === 'string' ? fieldConfig : fieldConfig.type;
+                
+                if (fieldType === 'upload') {
+                    // Handle upload fields
+                    if (fieldElement.files && fieldElement.files.length > 0) {
+                        // Add files to custom files object
+                        customFiles[fieldName] = Array.from(fieldElement.files);
+                    }
+                } else {
+                    // Handle regular fields
+                    const fieldValue = fieldElement.value;
+                    if (fieldValue && fieldValue.trim()) {
+                        customData[fieldName] = fieldValue;
+                    }
+                }
             }
         });
     }
@@ -497,7 +668,14 @@ async function handleRegistration(e) {
         formData.append('custom_data', JSON.stringify(customData));
     }
     
-    // Add files
+    // Add custom upload files
+    Object.entries(customFiles).forEach(([fieldName, files]) => {
+        files.forEach(file => {
+            formData.append(`custom_file_${fieldName}`, file);
+        });
+    });
+    
+    // Add general document files
     selectedFiles.forEach(file => {
         formData.append('documents', file);
     });

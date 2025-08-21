@@ -269,13 +269,36 @@
                     class="field-name"
                     placeholder="Field name (e.g., Company, Phone)"
                   />
-                  <select class="field-type">
+                  <select
+                    class="field-type"
+                    onchange="handleFieldTypeChange(this)"
+                  >
                     <option value="text">Text</option>
                     <option value="email">Email</option>
                     <option value="tel">Phone</option>
                     <option value="url">Website</option>
                     <option value="textarea">Long Text</option>
+                    <option value="upload">File Upload</option>
                   </select>
+
+                  <!-- Upload field configuration (hidden by default) -->
+                  <div class="upload-field-config" style="display: none;">
+                    <div class="upload-config-row">
+                      <label>Max Size (MB):</label>
+                      <input
+                        type="number"
+                        class="upload-max-size"
+                        value="5"
+                        min="1"
+                        max="50"
+                      />
+                    </div>
+                    <div class="upload-config-row">
+                      <label>Required:</label>
+                      <input type="checkbox" class="upload-required" />
+                    </div>
+                  </div>
+
                   <button
                     type="button"
                     class="remove-field"

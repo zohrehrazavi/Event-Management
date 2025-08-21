@@ -9,7 +9,8 @@ A modern, sleek event management platform built with Node.js, Express, PostgreSQ
 ### ✨ **Custom Fields Capabilities:**
 
 - **Dynamic Form Generation**: Create registration forms on-the-fly
-- **Multiple Field Types**: Text, Email, Phone, URL, Textarea
+- **Multiple Field Types**: Text, Email, Phone, URL, Textarea, **File Upload**
+- **Upload Field Configuration**: Set max file size (1-50MB) and required/optional
 - **Conditional Document Upload**: Enable/disable file uploads per event
 - **Flexible Configuration**: Set file types, sizes, and limits
 - **Real-time Validation**: Client and server-side validation
@@ -289,9 +290,9 @@ npx jest tests/frontend.test.js
 
 ### Test Results
 
-- ✅ **12 tests passing**
+- ✅ **17 tests passing**
 - ✅ **100% test success rate**
-- ✅ **Comprehensive coverage** of custom fields functionality
+- ✅ **Comprehensive coverage** of custom fields functionality including upload fields
 
 ## 🚀 Future Enhancements
 
