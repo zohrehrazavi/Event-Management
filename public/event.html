@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details - EventHub</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/event-page.css?v=1.1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-calendar-alt"></i>
+            <a href="/" style="text-decoration: none; color: inherit;">
+              EventHub
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Event Details Section -->
+      <section class="event-details-section">
+        <div class="event-container">
+          <!-- Event Banner -->
+          <div class="event-banner" id="eventBanner">
+            <!-- KV banner will be loaded here if available -->
+          </div>
+
+          <!-- Event Header -->
+          <div class="event-header-details">
+            <div class="event-meta">
+              <span class="event-category" id="eventCategory">
+                Professional Event
+              </span>
+              <span class="event-date-time" id="eventDateTime">Loading...</span>
+            </div>
+            <h1 class="event-title" id="eventTitle">Loading...</h1>
+            <p class="event-description" id="eventDescription">Loading...</p>
+
+            <div class="event-stats">
+              <div class="stat">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="eventLocation">Loading...</span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-users"></i>
+                <span id="eventAttendees">Loading...</span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-clock"></i>
+                <span id="eventDuration">Loading...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Content -->
+          <div class="event-content">
+            <div class="event-main">
+              <!-- Event Agenda -->
+              <div class="event-section">
+                <h2>
+                  <i class="fas fa-list"></i>
+                  Event Agenda
+                </h2>
+                <div class="agenda-list" id="eventAgenda">
+                  <div class="agenda-item">
+                    <div class="agenda-time">09:00 AM</div>
+                    <div class="agenda-content">
+                      <h4>Registration & Welcome Coffee</h4>
+                      <p>Check-in and networking with fellow attendees</p>
+                    </div>
+                  </div>
+                  <div class="agenda-item">
+                    <div class="agenda-time">09:30 AM</div>
+                    <div class="agenda-content">
+                      <h4>Opening Remarks</h4>
+                      <p>Welcome and introduction to the event</p>
+                    </div>
+                  </div>
+                  <div class="agenda-item">
+                    <div class="agenda-time">10:00 AM</div>
+                    <div class="agenda-content">
+                      <h4>Main Session</h4>
+                      <p>Core content and presentations</p>
+                    </div>
+                  </div>
+                  <div class="agenda-item">
+                    <div class="agenda-time">12:00 PM</div>
+                    <div class="agenda-content">
+                      <h4>Lunch Break</h4>
+                      <p>Networking lunch with participants</p>
+                    </div>
+                  </div>
+                  <div class="agenda-item">
+                    <div class="agenda-time">01:30 PM</div>
+                    <div class="agenda-content">
+                      <h4>Workshop Session</h4>
+                      <p>Interactive workshop and hands-on activities</p>
+                    </div>
+                  </div>
+                  <div class="agenda-item">
+                    <div class="agenda-time">04:00 PM</div>
+                    <div class="agenda-content">
+                      <h4>Closing & Networking</h4>
+                      <p>Wrap-up and continued networking</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Event Details -->
+              <div class="event-section">
+                <h2>
+                  <i class="fas fa-info-circle"></i>
+                  Event Details
+                </h2>
+                <div class="details-grid">
+                  <div class="detail-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                      <h4>Date & Time</h4>
+                      <p id="eventFullDateTime">Loading...</p>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                      <h4>Location</h4>
+                      <p id="eventFullLocation">Loading...</p>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                      <h4>Capacity</h4>
+                      <p id="eventCapacity">Loading...</p>
+                    </div>
+                  </div>
+                  <div class="detail-item">
+                    <i class="fas fa-tag"></i>
+                    <div>
+                      <h4>Category</h4>
+                      <p id="eventFullCategory">Loading...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Registration Sidebar -->
+            <div class="registration-sidebar">
+              <div class="registration-card">
+                <h3>Register for This Event</h3>
+                <div class="registration-status" id="registrationStatus">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Registration Open</span>
+                </div>
+
+                <form id="registrationForm" class="registration-form">
+                  <!-- All fields will be dynamically generated based on admin configuration -->
+                  <div id="dynamicFieldsContainer">
+                    <!-- All form fields (including standard ones) will be added here dynamically -->
+                  </div>
+
+                  <button type="submit" class="register-button">
+                    <i class="fas fa-check"></i>
+                    Register for Event
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <p>&copy; 2024 EventHub. All rights reserved.</p>
+          </div>
+          <div class="footer-section">
+            <a href="/admin.html" class="admin-link-footer">
+              <i class="fas fa-user-shield"></i>
+              Admin Login
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/event-page.js"></script>
+</rewritten_file>

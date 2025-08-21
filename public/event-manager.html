@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Manager - Admin Dashboard</title>
+    <link rel="stylesheet" href="/admin-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="admin-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1>
+            <i class="fas fa-calendar-plus"></i>
+            Event Manager
+          </h1>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/admin.html" class="nav-item">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <h1 id="pageTitle">Create New Event</h1>
+          <p id="pageDescription">
+            Fill in the details below to create a new event
+          </p>
+        </header>
+
+        <!-- Form Container -->
+        <div class="content-container">
+          <form id="eventForm" class="event-form">
+            <input type="hidden" id="eventId" name="eventId" />
+
+            <!-- Basic Information -->
+            <div class="form-section">
+              <h2>
+                <i class="fas fa-info-circle"></i>
+                Basic Information
+              </h2>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="eventTitle">Event Title *</label>
+                  <input type="text" id="eventTitle" name="title" required />
+                </div>
+                <div class="form-group">
+                  <label for="eventLocation">Location</label>
+                  <input
+                    type="text"
+                    id="eventLocation"
+                    name="location"
+                    placeholder="Event venue or address"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="eventDate">Event Date *</label>
+                  <input
+                    type="date"
+                    id="eventDate"
+                    name="event_date"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="eventTime">Event Time *</label>
+                  <input
+                    type="time"
+                    id="eventTime"
+                    name="event_time"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="eventDescription">Description</label>
+                <textarea
+                  id="eventDescription"
+                  name="description"
+                  rows="4"
+                  placeholder="Describe your event..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="eventAgenda">Event Agenda</label>
+                <textarea
+                  id="eventAgenda"
+                  name="agenda"
+                  rows="6"
+                  placeholder="Enter the event agenda/schedule. You can use format like:
+09:00 AM - Registration & Welcome Coffee
+09:30 AM - Opening Remarks
+10:00 AM - Main Session
+12:00 PM - Lunch Break
+01:30 PM - Workshop Session
+04:00 PM - Closing & Networking"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="maxAttendees">Maximum Attendees</label>
+                <input
+                  type="number"
+                  id="maxAttendees"
+                  name="max_attendees"
+                  min="1"
+                  value="100"
+                />
+              </div>
+
+              <!-- Document Upload Settings -->
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="allowDocuments"
+                    name="allow_documents"
+                    checked
+                  />
+                  <span>Allow document uploads during registration</span>
+                </label>
+              </div>
+
+              <div
+                class="form-group"
+                id="documentSettings"
+                style="display: none;"
+              >
+                <label for="allowedFileTypes">Allowed File Types</label>
+                <input
+                  type="text"
+                  id="allowedFileTypes"
+                  name="allowed_file_types"
+                  value=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                  placeholder=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                />
+
+                <label for="maxFileSize">Maximum File Size (MB)</label>
+                <input
+                  type="number"
+                  id="maxFileSize"
+                  name="max_file_size"
+                  value="10"
+                  min="1"
+                  max="50"
+                />
+
+                <label for="maxFiles">Maximum Number of Files</label>
+                <input
+                  type="number"
+                  id="maxFiles"
+                  name="max_files"
+                  value="5"
+                  min="1"
+                  max="20"
+                />
+              </div>
+            </div>
+
+            <!-- Event Image -->
+            <div class="form-section">
+              <h2>
+                <i class="fas fa-image"></i>
+                Event Image
+              </h2>
+
+              <div class="image-upload-section">
+                <div class="upload-area" id="uploadArea">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Drag & drop an image here or click to browse</p>
+                  <span class="upload-info">
+                    Supports: JPG, PNG, GIF (Max: 5MB)
+                  </span>
+                </div>
+                <input
+                  type="file"
+                  id="eventKVFile"
+                  name="eventKVFile"
+                  accept="image/*"
+                  style="display: none;"
+                />
+
+                <div
+                  class="image-preview"
+                  id="imagePreview"
+                  style="display: none;"
+                >
+                  <img id="previewImage" src="" alt="Event preview" />
+                  <button type="button" class="remove-image" id="removeImage">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label for="eventKV">Or enter image URL</label>
+                  <input
+                    type="url"
+                    id="eventKV"
+                    name="event_kv"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Access Control -->
+            <div class="form-section">
+              <h2>
+                <i class="fas fa-lock"></i>
+                Access Control
+              </h2>
+
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="isExclusive" name="is_exclusive" />
+                  <span>This is an exclusive event (requires access code)</span>
+                </label>
+              </div>
+
+              <div
+                class="form-group"
+                id="accessCodeGroup"
+                style="display: none;"
+              >
+                <label for="accessCode">Access Code</label>
+                <input
+                  type="text"
+                  id="accessCode"
+                  name="access_code"
+                  placeholder="Enter access code for exclusive events"
+                />
+              </div>
+            </div>
+
+            <!-- Custom Fields -->
+            <div class="form-section">
+              <h2>
+                <i class="fas fa-cogs"></i>
+                Custom Registration Fields
+              </h2>
+              <p class="section-description">
+                Add custom fields that attendees will fill during registration
+              </p>
+
+              <div id="customFieldsContainer">
+                <div class="custom-field-row">
+                  <input
+                    type="text"
+                    class="field-name"
+                    placeholder="Field name (e.g., Company, Phone)"
+                  />
+                  <select class="field-type">
+                    <option value="text">Text</option>
+                    <option value="email">Email</option>
+                    <option value="tel">Phone</option>
+                    <option value="url">Website</option>
+                    <option value="textarea">Long Text</option>
+                  </select>
+                  <button
+                    type="button"
+                    class="remove-field"
+                    onclick="removeCustomField(this)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="addCustomField()"
+              >
+                <i class="fas fa-plus"></i>
+                Add Custom Field
+              </button>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="cancelForm()"
+              >
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+              <button type="submit" class="primary-button" id="submitBtn">
+                <i class="fas fa-save"></i>
+                Create Event
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="/event-manager.js"></script>
+  </body>
+</html>

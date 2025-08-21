@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EventHub Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="admin-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="admin-logo">
+            EventHub Admin
+          </h2>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="#events" class="nav-item active" data-section="events">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Events</span>
+          </a>
+          <a href="#attendees" class="nav-item" data-section="attendees">
+            <i class="fas fa-users"></i>
+            <span>Attendees</span>
+          </a>
+          <a href="#vendors" class="nav-item" data-section="vendors">
+            <i class="fas fa-store"></i>
+            <span>Vendors</span>
+          </a>
+          <a href="#analytics" class="nav-item" data-section="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Site</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="admin-header">
+          <div class="header-left">
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageDescription">
+              Welcome to your event management dashboard
+            </p>
+          </div>
+          <div class="header-right">
+            <button class="add-event-btn" onclick="openAddEventModal()">
+              <i class="fas fa-plus"></i>
+              Add Event
+            </button>
+          </div>
+        </header>
+
+        <!-- Events Section -->
+        <section id="events" class="content-section active">
+          <div class="section-header">
+            <h2>Event Management</h2>
+            <a href="/event-manager" class="primary-button">
+              <i class="fas fa-plus"></i>
+              Create New Event
+            </a>
+          </div>
+
+          <div class="events-table-container">
+            <table class="events-table">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Date & Time</th>
+                  <th>Location</th>
+                  <th>Attendees</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody">
+                <!-- Events will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Attendees Section -->
+        <section id="attendees" class="content-section">
+          <div class="section-header">
+            <h2>Attendee Management</h2>
+            <div class="filters">
+              <select id="eventFilter" onchange="filterAttendees()">
+                <option value="">All Events</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="attendees-table-container">
+            <table class="attendees-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Event</th>
+                  <th>Company</th>
+                  <th>Registration Date</th>
+                  <th>Documents</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="attendeesTableBody">
+                <!-- Attendees will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Vendors Section -->
+        <section id="vendors" class="content-section">
+          <div class="section-header">
+            <h2>Vendor Management</h2>
+            <button class="primary-button" onclick="openAddVendorModal()">
+              <i class="fas fa-plus"></i>
+              Add Vendor
+            </button>
+          </div>
+
+          <div class="vendors-grid" id="vendorsGrid">
+            <!-- Vendors will be loaded here -->
+          </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+          <div class="section-header">
+            <h2>Analytics & Reports</h2>
+          </div>
+
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <h3>Event Performance</h3>
+              <div class="chart-container">
+                <canvas id="eventChart"></canvas>
+              </div>
+            </div>
+
+            <div class="analytics-card">
+              <h3>Registration Trends</h3>
+              <div class="chart-container">
+                <canvas id="registrationChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add Vendor Modal -->
+    <div id="addVendorModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add Vendor</h3>
+          <button class="close-button" onclick="closeAddVendorModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form id="addVendorForm" class="vendor-form">
+          <div class="form-group">
+            <label for="vendorEvent">Event *</label>
+            <select id="vendorEvent" name="event_id" required>
+              <option value="">Select Event</option>
+            </select>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="vendorName">Vendor Name *</label>
+              <input type="text" id="vendorName" name="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="vendorContact">Contact Person</label>
+              <input type="text" id="vendorContact" name="contact_person" />
+            </div>
+
+            <div class="form-group">
+              <label for="vendorEmail">Contact Email</label>
+              <input type="email" id="vendorEmail" name="contact_email" />
+            </div>
+
+            <div class="form-group">
+              <label for="vendorPhone">Contact Phone</label>
+              <input type="tel" id="vendorPhone" name="contact_phone" />
+            </div>
+
+            <div class="form-group">
+              <label for="boothNumber">Booth Number</label>
+              <input type="text" id="boothNumber" name="booth_number" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="vendorDescription">Description</label>
+            <textarea
+              id="vendorDescription"
+              name="description"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="vendorServices">Services (comma-separated)</label>
+            <input
+              type="text"
+              id="vendorServices"
+              name="services"
+              placeholder="Service 1, Service 2, Service 3"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="secondary-button"
+              onclick="closeAddVendorModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="primary-button">
+              <i class="fas fa-save"></i>
+              Add Vendor
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div id="eventDetailsModal" class="modal">
+      <div class="modal-content large-modal">
+        <div class="modal-header">
+          <h3 id="eventDetailsTitle">Event Details</h3>
+          <button class="close-button" onclick="closeEventDetailsModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="event-details-content">
+          <div class="event-info">
+            <div class="event-header">
+              <h4 id="eventDetailsName"></h4>
+              <span id="eventDetailsDate" class="event-date-badge"></span>
+            </div>
+            <p id="eventDetailsDescription"></p>
+
+            <div class="event-stats">
+              <div class="stat">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="eventDetailsLocation"></span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-users"></i>
+                <span id="eventDetailsAttendees"></span>
+              </div>
+              <div class="stat">
+                <i class="fas fa-store"></i>
+                <span id="eventDetailsVendors"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-tabs">
+            <button class="tab-button active" data-tab="attendees">
+              Attendees
+            </button>
+            <button class="tab-button" data-tab="vendors">Vendors</button>
+            <button class="tab-button" data-tab="customization">
+              Customization
+            </button>
+          </div>
+
+          <div class="tab-content">
+            <div id="attendeesTab" class="tab-panel active">
+              <div class="attendees-list" id="eventAttendeesList">
+                <!-- Event attendees will be loaded here -->
+              </div>
+            </div>
+
+            <div id="vendorsTab" class="tab-panel">
+              <div class="vendors-list" id="eventVendorsList">
+                <!-- Event vendors will be loaded here -->
+              </div>
+            </div>
+
+            <div id="customizationTab" class="tab-panel">
+              <div class="customization-form">
+                <h4>Event Customization</h4>
+                <div class="form-group">
+                  <label for="eventKVUpdate">Event KV (Image URL)</label>
+                  <input
+                    type="url"
+                    id="eventKVUpdate"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <button class="primary-button" onclick="updateEventKV()">
+                  <i class="fas fa-save"></i>
+                  Update KV
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+  </body>
+</html>
