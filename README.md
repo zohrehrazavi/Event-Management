@@ -2,6 +2,35 @@
 
 A modern, sleek event management platform built with Node.js, Express, PostgreSQL, and vanilla HTML/CSS/JavaScript. This platform features **dynamic custom fields** that allow administrators to create tailored registration forms for each event, while providing comprehensive event management capabilities.
 
+## ⚠️ **CURRENT STATUS: WORK IN PROGRESS**
+
+**This project is actively being developed and contains known bugs that need to be addressed.**
+
+### 🔧 **Known Issues & Bugs:**
+
+- Frontend form submission errors (500 Internal Server Error)
+- Browser cache issues causing inconsistent behavior
+- Some UI elements not properly responsive
+- File upload validation needs improvement
+- Admin dashboard loading issues
+- Event creation form validation bugs
+
+### ✅ **What's Working:**
+
+- Backend API endpoints (tested via curl)
+- Database schema and operations
+- Custom fields functionality
+- Registration system (API level)
+- Unit tests (39 tests passing)
+- Flexible database schema
+
+### 🚧 **In Progress:**
+
+- Frontend bug fixes
+- UI/UX improvements
+- Error handling enhancements
+- Performance optimizations
+
 ## 🌟 **NEW: Dynamic Custom Fields Feature**
 
 **EventHub now supports fully customizable registration forms!** Administrators can define custom data fields for each event, and end-users will only see those specific fields during registration. This makes EventHub perfect for events with different requirements - from simple meetups to complex professional conferences.
@@ -335,6 +364,43 @@ If you encounter any issues or have questions:
 - PostgreSQL for database
 - Express.js community for the excellent framework
 
+## 🐛 **Development Status & Known Issues**
+
+### **Latest Updates (Commit: fb52369)**
+
+- ✅ Fixed database schema mismatch issues
+- ✅ Resolved JavaScript errors in registration system
+- ✅ Added comprehensive unit tests (39 tests passing)
+- ✅ Implemented flexible database schema for custom fields
+- ✅ Fixed file upload functionality
+
+### **Current Development Focus**
+
+1. **Frontend Bug Fixes** - Resolving 500 errors in form submissions
+2. **UI/UX Improvements** - Better error handling and user feedback
+3. **Performance Optimization** - Reducing load times and improving responsiveness
+4. **Testing Enhancement** - Adding more comprehensive test coverage
+
+### **Bug Reports & Issues**
+
+If you encounter bugs, please:
+
+1. Check the browser console for JavaScript errors
+2. Clear browser cache (Ctrl+Shift+R)
+3. Test with different browsers
+4. Report issues with detailed error messages
+
+### **Contributing to Bug Fixes**
+
+We welcome contributions! Please:
+
+1. Fork the repository
+2. Create a bug fix branch
+3. Test your changes thoroughly
+4. Submit a pull request with detailed description
+
 ---
 
 **Built with ❤️ for event organizers and attendees worldwide**
+
+**⚠️ Note: This is a work-in-progress project with known bugs. Use at your own risk.**
