@@ -1,406 +1,287 @@
-# EventHub - Event Management Dashboard
+# Event Management System
 
-A modern, sleek event management platform built with Node.js, Express, PostgreSQL, and vanilla HTML/CSS/JavaScript. This platform features **dynamic custom fields** that allow administrators to create tailored registration forms for each event, while providing comprehensive event management capabilities.
+A professional Event Management application built with FastAPI backend and React + TypeScript frontend. This system enables organizations to manage their events with admin controls while providing public access to event information.
 
-## ⚠️ **CURRENT STATUS: WORK IN PROGRESS**
+## 🚀 MVP Roadmap
 
-**This project is actively being developed and contains known bugs that need to be addressed.**
+### ✅ MVP 1 – Core Setup & Auth (COMPLETED)
+**Features:**
+- ~~User registration & login (JWT auth)~~ *Simplified: Admin-only login*
+- Role-based access (Admin, Client/Attendee)
+- Basic admin profile management
+- Public event viewing (no login required)
 
-### 🔧 **Known Issues & Bugs:**
+**Tech Stack:**
+- Backend: FastAPI (auth, APIs)
+- DB: PostgreSQL
+- Frontend: React + TypeScript (login/admin pages)
 
-- Frontend form submission errors (500 Internal Server Error)
-- Browser cache issues causing inconsistent behavior
-- Some UI elements not properly responsive
-- File upload validation needs improvement
-- Admin dashboard loading issues
-- Event creation form validation bugs
+**Goal:** ✅ Secure foundation with authentication & roles
 
-### ✅ **What's Working:**
+### 🔄 MVP 2 – Event Creation & Management (IN PROGRESS)
+**Features:**
+- Admin can create, update, delete events
+- Event fields: name, date, location, description, capacity
+- Public event viewing for all users
+- Admin dashboard with quick actions
 
-- Backend API endpoints (tested via curl)
-- Database schema and operations
-- Custom fields functionality
-- Registration system (API level)
-- Unit tests (39 tests passing)
-- Flexible database schema
+**Tech Stack:**
+- Backend: FastAPI APIs for CRUD
+- Frontend: React event list + detail pages
+- DB: PostgreSQL (Event table)
 
-### 🚧 **In Progress:**
+**Goal:** Basic event lifecycle management
 
-- Frontend bug fixes
-- UI/UX improvements
-- Error handling enhancements
-- Performance optimizations
+### 📋 MVP 3 – Ticketing & Registration (PLANNED)
+**Features:**
+- Attendees register for events
+- Generate unique ticket ID (QR code optional)
+- Capacity check (no overbooking)
 
-## 🌟 **NEW: Dynamic Custom Fields Feature**
+**Tech Stack:**
+- Backend: FastAPI APIs for registration & ticketing
+- Frontend: Registration form + my tickets page
+- DB: Registration & Ticket tables
 
-**EventHub now supports fully customizable registration forms!** Administrators can define custom data fields for each event, and end-users will only see those specific fields during registration. This makes EventHub perfect for events with different requirements - from simple meetups to complex professional conferences.
+**Goal:** Core event booking system
 
-### ✨ **Custom Fields Capabilities:**
+### 🎛️ MVP 4 – Admin Panel (PLANNED)
+**Features:**
+- Enhanced admin panel functionality
+- Manage users, events, registrations in clean UI
+- Search/filter events & attendees
+- Event analytics and reporting
 
-- **Dynamic Form Generation**: Create registration forms on-the-fly
-- **Multiple Field Types**: Text, Email, Phone, URL, Textarea, **File Upload**
-- **Upload Field Configuration**: Set max file size (1-50MB) and required/optional
-- **Conditional Document Upload**: Enable/disable file uploads per event
-- **Flexible Configuration**: Set file types, sizes, and limits
-- **Real-time Validation**: Client and server-side validation
-- **Data Persistence**: Store custom field data in JSON format
+**Tech Stack:**
+- Frontend: React dashboard (protected routes)
+- Backend: APIs for user/event management
 
-## 🚀 Features
+**Goal:** Internal control system for organizers
 
-### For Users
+### 💳 MVP 5 – Payments (FUTURE)
+**Features:**
+- Integrate Stripe/PayPal for ticket purchase
+- Store transactions in DB
+- Refunds & payment history
 
-- **Event Discovery**: Browse and discover upcoming events
-- **Easy Registration**: Simple registration process with personal information
-- **Document Upload**: Upload supporting documents and images
-- **Real-time Updates**: See attendee counts and event status
-- **Responsive Design**: Works seamlessly on all devices
+**Goal:** Monetization of events
 
-### For Administrators
+## 🏗️ Project Structure
 
-- **Event Management**: Create, edit, and manage events
-- **Dynamic Custom Fields**: Create tailored registration forms for each event
-- **Attendee Analytics**: View detailed attendee information and statistics
-- **Vendor Management**: Manage vendors for each event
-- **Event Branding**: Customize event KV (Key Visual) for each event
-- **Dashboard Analytics**: Comprehensive analytics and reporting
-- **Document Upload Control**: Configure file upload settings per event
+```
+Event-Management/
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── models/         # Database models (User, Event)
+│   │   ├── routes/         # API routes (auth, events)
+│   │   ├── schemas/        # Pydantic schemas
+│   │   ├── auth/           # JWT authentication logic
+│   │   └── main.py         # FastAPI application
+│   ├── requirements.txt    # Python dependencies
+│   └── .env               # Environment variables
+├── frontend/               # React + TypeScript frontend
+│   ├── src/
+│   │   ├── components/     # React components (Layout)
+│   │   ├── pages/         # Page components (Events, Login, Admin)
+│   │   ├── services/      # API services
+│   │   └── types/         # TypeScript types
+│   ├── package.json       # Node.js dependencies
+│   └── tailwind.config.js # TailwindCSS configuration
+├── setup.sh               # Quick setup script
+└── README.md              # This file
+```
 
-## 🛠️ Tech Stack
+## ✨ Current Features (MVP 1)
 
-- **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL with JSONB support
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **File Upload**: Multer with configurable settings
-- **Testing**: Jest, Supertest, JSDOM
-- **Styling**: Custom CSS with modern design
-- **Icons**: Font Awesome
-- **Fonts**: Inter (Google Fonts)
+### 🔐 Authentication & Authorization
+- JWT-based admin authentication
+- Role-based access control (Admin only)
+- Public access to events (no login required)
+- Secure admin dashboard
 
-## 📋 Prerequisites
+### 📅 Event Management
+- **Public Features:**
+  - View all events without login
+  - Event detail pages with full information
+  - Responsive design for all devices
+  
+- **Admin Features:**
+  - Secure admin login
+  - Admin dashboard with quick actions
+  - Event management capabilities (create/edit/delete)
+  - Professional UI with modern design
 
-- Node.js (v14 or higher)
-- PostgreSQL (v12 or higher)
-- npm or yarn
+### 🎨 User Interface
+- Modern, responsive design with TailwindCSS
+- Professional color scheme and gradients
+- Mobile-first responsive layout
+- Clean admin dashboard
+- Public event browsing interface
 
-## 🚀 Installation
+## Quick Start
 
-1. **Clone the repository**
+### Backend Setup
 
+1. Navigate to the backend directory:
    ```bash
-   git clone <repository-url>
-   cd event-management-dashboard
+   cd backend
    ```
 
-2. **Install dependencies**
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database credentials
+   ```
+
+5. Run the backend:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+The backend will be available at `http://localhost:8000`
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
-
+3. Start the development server:
    ```bash
-   cp env.example .env
+   npm start
    ```
 
-   Edit `.env` file with your configuration:
+The frontend will be available at `http://localhost:3000`
 
-   ```env
-   DATABASE_URL=postgresql://username:password@localhost:5432/event_management
-   PORT=3000
-   NODE_ENV=development
-   SESSION_SECRET=your-super-secret-session-key
+## 🔗 API Endpoints
+
+### Public Endpoints
+- `GET /events` - List all events (public access)
+- `GET /events/{id}` - Get event details (public access)
+- `GET /health` - Health check
+
+### Authentication Endpoints
+- `POST /auth/login` - Admin login
+- `POST /auth/register` - Register new admin user
+
+### Protected Endpoints (Admin Only)
+- `POST /events` - Create new event
+- `PUT /events/{id}` - Update event
+- `DELETE /events/{id}` - Delete event
+
+## 🗄️ Database Setup
+
+1. **Install PostgreSQL:**
+   ```bash
+   # macOS
+   brew install postgresql@14
+   brew services start postgresql@14
+   
+   # Ubuntu
+   sudo apt install postgresql postgresql-contrib
    ```
 
-4. **Set up PostgreSQL database**
-
+2. **Create database:**
    ```bash
-   # Create database
    createdb event_management
-
-   # Or using psql
-   psql -U postgres
-   CREATE DATABASE event_management;
    ```
 
-5. **Initialize the database**
-
+3. **Update environment variables:**
    ```bash
-   npm run init-db
+   cp backend/env.example backend/.env
+   # Edit backend/.env with your database credentials
    ```
 
-6. **Start the development server**
+4. **Tables are created automatically** when you run the backend
 
-   ```bash
-   npm run dev
-   ```
+## 👤 Admin User Setup
 
-7. **Run tests (optional)**
-
-   ```bash
-   # Run all tests
-   npm test
-
-   # Run tests with coverage
-   npm run test:coverage
-   ```
-
-8. **Access the application**
-   - User Interface: http://localhost:3000
-   - Admin Dashboard: http://localhost:3000/admin
-
-## 🗄️ Database Schema
-
-### Events Table
-
-- `id`: Primary key
-- `title`: Event title
-- `description`: Event description
-- `event_date`: Event date
-- `event_time`: Event time
-- `location`: Event location
-- `max_attendees`: Maximum attendees allowed
-- `current_attendees`: Current number of attendees
-- `event_kv`: Event key visual URL
-- `custom_fields`: JSONB object for dynamic custom form fields
-- `allow_documents`: Boolean for document upload enablement
-- `allowed_file_types`: String for allowed file extensions
-- `max_file_size`: Integer for maximum file size in MB
-- `max_files`: Integer for maximum number of files
-- `created_at`: Creation timestamp
-
-### Attendees Table
-
-- `id`: Primary key
-- `event_id`: Foreign key to events
-- `first_name`: Attendee first name
-- `last_name`: Attendee last name
-- `email`: Attendee email
-- `phone`: Phone number
-- `company`: Company name
-- `position`: Job position
-- `custom_data`: JSON object for custom field data
-- `documents`: Array of uploaded document filenames
-- `registration_date`: Registration timestamp
-
-### Vendors Table
-
-- `id`: Primary key
-- `event_id`: Foreign key to events
-- `name`: Vendor name
-- `description`: Vendor description
-- `contact_person`: Contact person name
-- `contact_email`: Contact email
-- `contact_phone`: Contact phone
-- `booth_number`: Booth number
-- `services`: Array of services offered
-- `created_at`: Creation timestamp
-
-## 🚀 Deployment on Railway
-
-1. **Connect your repository to Railway**
-
-   - Go to [Railway.app](https://railway.app)
-   - Create a new project
-   - Connect your GitHub repository
-
-2. **Set up environment variables**
-
-   - Add `DATABASE_URL` (Railway will provide PostgreSQL)
-   - Add `SESSION_SECRET`
-   - Add `NODE_ENV=production`
-
-3. **Deploy**
-   - Railway will automatically detect the Node.js project
-   - The `railway.json` file provides deployment configuration
-   - Your app will be deployed and accessible via Railway's domain
-
-## 📁 Project Structure
-
-```
-event-management-dashboard/
-├── public/                 # Static files
-│   ├── index.html         # User-facing homepage
-│   ├── event.html         # Event details page
-│   ├── admin.html         # Admin dashboard
-│   ├── event-manager.html # Event creation/editing page
-│   ├── styles.css         # Main styles
-│   ├── event-page.css     # Event page styles
-│   ├── admin-styles.css   # Admin styles
-│   ├── script.js          # Main JavaScript
-│   ├── event-page.js      # Event page JavaScript
-│   ├── event-manager.js   # Event manager JavaScript
-│   └── admin-script.js    # Admin JavaScript
-├── tests/                 # Test suite
-│   ├── unit.test.js       # Unit tests for custom fields
-│   ├── frontend.test.js   # Frontend functionality tests
-│   ├── custom-fields.test.js # Integration tests
-│   ├── setup.js           # Test environment setup
-│   └── README.md          # Test documentation
-├── scripts/               # Database scripts
-│   ├── init-database.js   # Database initialization
-│   └── reset-database.js  # Database reset
-├── uploads/               # File uploads directory
-├── server.js              # Main server file
-├── package.json           # Dependencies and scripts
-├── jest.config.js         # Jest configuration
-├── railway.json           # Railway deployment config
-├── env.example            # Environment variables example
-├── CUSTOM_FIELDS_GUIDE.md # Custom fields documentation
-└── README.md              # This file
-```
-
-## 🔧 API Endpoints
-
-### Events
-
-- `GET /api/events` - Get all events
-- `GET /api/events/:id` - Get specific event with custom fields
-- `POST /api/admin/events` - Create new event with custom fields
-- `PUT /api/admin/events/:id` - Update event and custom fields
-- `POST /api/events/:id/register` - Register for event with custom data
-
-### Attendees
-
-- `GET /api/events/:id/attendees` - Get event attendees
-- `GET /api/attendees` - Get all attendees
-
-### Vendors
-
-- `GET /api/events/:id/vendors` - Get event vendors
-- `POST /api/events/:id/vendors` - Add vendor to event
-
-### Admin
-
-- `POST /api/admin/login` - Admin authentication
-- `GET /api/admin/events` - Get all events for admin
-- `GET /api/admin/attendees` - Get all attendees for admin
-
-## 🎨 Design Features
-
-- **Modern UI**: Clean, professional design with gradient backgrounds
-- **Responsive**: Mobile-first responsive design
-- **Animations**: Smooth transitions and hover effects
-- **Accessibility**: Proper ARIA labels and keyboard navigation
-- **Loading States**: Visual feedback for user actions
-- **Error Handling**: User-friendly error messages
-
-## 🔒 Security Features
-
-- **File Upload Validation**: Type and size restrictions
-- **SQL Injection Prevention**: Parameterized queries
-- **XSS Protection**: Input sanitization
-- **CSRF Protection**: Session-based security
-- **Rate Limiting**: Built-in protection against abuse
-
-## 🧪 Testing
-
-EventHub includes a comprehensive test suite for the custom fields functionality:
-
-### Test Coverage
-
-- **Unit Tests**: Field validation, data processing, HTML generation
-- **Frontend Tests**: Dynamic form generation, user interactions
-- **Integration Tests**: API endpoints, database operations
-
-### Running Tests
+Create an admin user using curl:
 
 ```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run specific test suites
-npx jest tests/unit.test.js
-npx jest tests/frontend.test.js
+curl -X POST "http://localhost:8000/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Admin User",
+    "email": "admin@example.com",
+    "password": "admin123",
+    "role": "admin"
+  }'
 ```
 
-### Test Results
+**Default Admin Credentials:**
+- Email: `admin@example.com`
+- Password: `admin123`
 
-- ✅ **17 tests passing**
-- ✅ **100% test success rate**
-- ✅ **Comprehensive coverage** of custom fields functionality including upload fields
+## 🚀 Quick Setup Script
 
-## 🚀 Future Enhancements
+Use the included setup script for automatic installation:
 
-- [ ] Email notifications for registrations
-- [ ] QR code generation for event check-in
-- [ ] Advanced analytics and reporting
-- [ ] Multi-language support
-- [ ] Payment integration
-- [ ] Social media integration
-- [ ] Mobile app development
-- [ ] Advanced custom field types (date, time, select, checkbox)
-- [ ] Field validation rules and custom validation
-- [ ] Conditional field display based on other field values
+```bash
+chmod +x setup.sh
+./setup.sh
+```
 
-## 🤝 Contributing
+This script will:
+- Set up Python virtual environment
+- Install backend dependencies
+- Create `.env` file
+- Install frontend dependencies
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 🌐 Access Points
 
-## 📄 License
+- **Frontend (Public):** http://localhost:3000
+- **Backend API:** http://localhost:8000
+- **API Documentation:** http://localhost:8000/docs
+- **Admin Dashboard:** http://localhost:3000/admin/profile (after login)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📱 User Flows
 
-## 🆘 Support
+### Public User Flow
+1. Visit http://localhost:3000
+2. Browse events without registration
+3. View event details
 
-If you encounter any issues or have questions:
+### Admin User Flow
+1. Visit http://localhost:3000/login
+2. Login with admin credentials
+3. Access admin dashboard
+4. Manage events through quick actions
 
-1. Check the [Issues](https://github.com/your-repo/issues) page
-2. Create a new issue with detailed information
-3. Contact the development team
+## 🛠️ Technology Stack
 
-## 🙏 Acknowledgments
+**Backend:**
+- FastAPI (Python web framework)
+- SQLAlchemy (ORM)
+- PostgreSQL (Database)
+- JWT (Authentication)
+- Uvicorn (ASGI server)
 
-- Font Awesome for icons
-- Google Fonts for typography
-- Railway for deployment platform
-- PostgreSQL for database
-- Express.js community for the excellent framework
+**Frontend:**
+- React 18 (UI framework)
+- TypeScript (Type safety)
+- Tailwind CSS (Styling)
+- Axios (HTTP client)
+- React Router (Navigation)
 
-## 🐛 **Development Status & Known Issues**
-
-### **Latest Updates (Commit: fb52369)**
-
-- ✅ Fixed database schema mismatch issues
-- ✅ Resolved JavaScript errors in registration system
-- ✅ Added comprehensive unit tests (39 tests passing)
-- ✅ Implemented flexible database schema for custom fields
-- ✅ Fixed file upload functionality
-
-### **Current Development Focus**
-
-1. **Frontend Bug Fixes** - Resolving 500 errors in form submissions
-2. **UI/UX Improvements** - Better error handling and user feedback
-3. **Performance Optimization** - Reducing load times and improving responsiveness
-4. **Testing Enhancement** - Adding more comprehensive test coverage
-
-### **Bug Reports & Issues**
-
-If you encounter bugs, please:
-
-1. Check the browser console for JavaScript errors
-2. Clear browser cache (Ctrl+Shift+R)
-3. Test with different browsers
-4. Report issues with detailed error messages
-
-### **Contributing to Bug Fixes**
-
-We welcome contributions! Please:
-
-1. Fork the repository
-2. Create a bug fix branch
-3. Test your changes thoroughly
-4. Submit a pull request with detailed description
-
----
-
-**Built with ❤️ for event organizers and attendees worldwide**
-
-**⚠️ Note: This is a work-in-progress project with known bugs. Use at your own risk.**
+**Development:**
+- Python 3.9+
+- Node.js 16+
+- npm/yarn package manager
