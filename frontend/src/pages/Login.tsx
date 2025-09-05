@@ -37,12 +37,8 @@ const Login: React.FC = () => {
         };
         localStorage.setItem('user', JSON.stringify(userInfo));
         
-        // Redirect admin to profile page, others to events
-        if (payload.role === 'admin') {
-          navigate('/admin/profile');
-        } else {
-          navigate('/events');
-        }
+        // Redirect all users to events page (admin functionality is now integrated there)
+        navigate('/events');
       } catch (decodeError) {
         console.warn('Could not decode token payload');
         navigate('/events');
@@ -56,11 +52,11 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-4 sm:py-8 lg:py-12 px-3 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Simplified Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-event rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-sunset rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
-        <div className="absolute top-40 left-40 w-60 h-60 bg-gradient-ocean rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-event rounded-full opacity-10"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-sunset rounded-full opacity-10"></div>
+        <div className="absolute top-40 left-40 w-60 h-60 bg-gradient-ocean rounded-full opacity-10"></div>
       </div>
 
       <div className="max-w-md w-full space-y-8 relative z-10">
@@ -75,7 +71,7 @@ const Login: React.FC = () => {
             Welcome Back
           </h2>
           <p className="text-base sm:text-lg text-gray-600">
-            Sign in to access your admin dashboard
+            Sign in to access event management features
           </p>
         </div>
         
@@ -176,7 +172,7 @@ const Login: React.FC = () => {
         {/* Footer */}
         <div className="text-center">
           <p className="text-sm text-gray-500">
-            Access your event management dashboard
+            Manage events and access admin features
           </p>
         </div>
       </div>

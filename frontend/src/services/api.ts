@@ -64,6 +64,20 @@ export const eventsAPI = {
     const response = await api.get(`/events/${id}`);
     return response.data;
   },
+
+  create: async (eventData: Omit<Event, 'id' | 'created_at' | 'updated_at'>): Promise<Event> => {
+    const response = await api.post('/events/', eventData);
+    return response.data;
+  },
+
+  update: async (id: number, eventData: Partial<Event>): Promise<Event> => {
+    const response = await api.put(`/events/${id}`, eventData);
+    return response.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/events/${id}`);
+  },
 };
 
 export default api;

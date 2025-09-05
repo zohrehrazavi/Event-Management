@@ -8,8 +8,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const isAuthenticated = !!localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const isAdmin = user.role === 'admin';
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -19,11 +17,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Animated background elements */}
+      {/* Simplified background elements for better performance */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-event rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-sunset rounded-full mix-blend-multiply filter blur-xl opacity-20"></div>
-        <div className="absolute top-40 left-40 w-60 h-60 bg-gradient-ocean rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse-slow"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-event rounded-full opacity-10"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-sunset rounded-full opacity-10"></div>
+        <div className="absolute top-40 left-40 w-60 h-60 bg-gradient-ocean rounded-full opacity-10"></div>
       </div>
 
       <nav className="relative bg-white/80 backdrop-blur-md shadow-lg border-b border-white/20 sticky top-0 z-50">
@@ -56,32 +54,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </Link>
               
               {isAuthenticated ? (
-                <>
-                  {isAdmin && (
-                    <Link
-                      to="/admin/profile"
-                      className="relative px-2 sm:px-3 lg:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-event rounded-lg hover:shadow-glow-purple transition-all duration-200 transform hover:scale-105 whitespace-nowrap"
-                    >
-                      <span className="hidden sm:inline">Admin Profile</span>
-                      <span className="sm:hidden">Admin</span>
-                    </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="px-2 sm:px-3 lg:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-primary-300 transition-all duration-200 transform hover:scale-105"
-                  >
-                    Logout
-                  </button>
-                </>
+                <button
+                  onClick={handleLogout}
+                  className="px-2 sm:px-3 lg:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-primary-300 transition-all duration-200 transform hover:scale-105"
+                >
+                  Logout
+                </button>
               ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="relative px-3 sm:px-4 lg:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-event rounded-lg hover:shadow-glow-purple transform hover:scale-105 transition-all duration-200"
-                  >
-                    Login
-                  </Link>
-                </>
+                /* Discrete admin access - small, subtle link */
+                <Link
+                  to="/login"
+                  className="px-2 py-1 text-xs text-gray-400 hover:text-gray-600 transition-colors duration-200 opacity-60 hover:opacity-100"
+                  title="Admin Access"
+                >
+                  Admin
+                </Link>
               )}
             </div>
           </div>
@@ -91,6 +78,29 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="relative z-10 max-w-7xl mx-auto py-3 sm:py-4 lg:py-6 px-3 sm:px-6 lg:px-8">
         {children}
       </main>
+
+      {/* Discrete footer with admin access */}
+      <footer className="relative z-10 mt-12 py-4 border-t border-gray-200/50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center text-xs text-gray-400">
+            <div className="flex items-center space-x-4">
+              <span>© 2024 EventHub</span>
+              <span>•</span>
+              <span>Event Management System</span>
+            </div>
+            
+            {!isAuthenticated && (
+              <Link
+                to="/login"
+                className="text-gray-300 hover:text-gray-500 transition-colors duration-200"
+                title="Administrator Access"
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
