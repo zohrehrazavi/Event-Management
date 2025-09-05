@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
-interface AdminProfile {
+interface AdminUser {
   email: string;
   role: string;
   name?: string;
@@ -10,7 +10,7 @@ interface AdminProfile {
 
 const AdminProfile: React.FC = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<AdminProfile | null>(null);
+  const [profile, setProfile] = useState<AdminUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const AdminProfile: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             <button
               onClick={() => navigate('/events')}
-              className="group bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-glow-blue transform hover:scale-105 transition-all duration-300"
+              className="group bg-gradient-event hover:shadow-glow-purple text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transform hover:scale-105 transition-all duration-300"
             >
               <div className="text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-white/30 transition-all duration-300">
@@ -85,7 +85,7 @@ const AdminProfile: React.FC = () => {
 
             <button
               onClick={() => navigate('/admin/events/create')}
-              className="group bg-gradient-to-br from-green-500 to-green-600 text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-glow-green transform hover:scale-105 transition-all duration-300"
+              className="group bg-gradient-event hover:shadow-glow-purple text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transform hover:scale-105 transition-all duration-300"
             >
               <div className="text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-white/30 transition-all duration-300">
@@ -99,8 +99,8 @@ const AdminProfile: React.FC = () => {
             </button>
 
             <button
-              onClick={() => navigate('/admin/events/manage')}
-              className="group bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-glow-purple transform hover:scale-105 transition-all duration-300 sm:col-span-2 lg:col-span-1"
+              onClick={() => navigate('/admin/analytics')}
+              className="group bg-gradient-event hover:shadow-glow-purple text-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transform hover:scale-105 transition-all duration-300 sm:col-span-2 lg:col-span-1"
             >
               <div className="text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-white/30 transition-all duration-300">

@@ -77,7 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <>
                   <Link
                     to="/login"
-                    className="relative px-3 sm:px-4 lg:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-sunset rounded-lg hover:shadow-glow transform hover:scale-105 transition-all duration-200"
+                    className="relative px-3 sm:px-4 lg:px-6 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-event rounded-lg hover:shadow-glow-purple transform hover:scale-105 transition-all duration-200"
                   >
                     Login
                   </Link>

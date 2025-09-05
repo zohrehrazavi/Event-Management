@@ -56,7 +56,7 @@ export const authAPI = {
 // Events API
 export const eventsAPI = {
   getAll: async (): Promise<Event[]> => {
-    const response = await api.get('/events');
+    const response = await api.get('/events/');
     return response.data;
   },
 

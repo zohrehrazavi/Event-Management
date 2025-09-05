@@ -4,7 +4,6 @@ import Login from './pages/Login';
 import AdminProfile from './pages/AdminProfile';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
-import Layout from './components/Layout';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -25,7 +24,12 @@ const Home: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

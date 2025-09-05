@@ -66,7 +66,7 @@ const EventDetail: React.FC = () => {
           <p className="mt-2 text-sm text-gray-500">The event you're looking for doesn't exist.</p>
           <Link
             to="/events"
-            className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+            className="mt-4 group relative inline-flex items-center justify-center py-3 px-6 border border-transparent text-sm font-bold rounded-xl text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-glow-blue"
           >
             Back to Events
           </Link>

@@ -143,7 +143,7 @@ const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full flex justify-center py-3 sm:py-4 px-6 border border-transparent text-base sm:text-lg font-bold rounded-xl text-white bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-glow-blue"
+                className="group relative w-full flex justify-center py-3 sm:py-4 px-6 border border-transparent text-base sm:text-lg font-bold rounded-xl text-white bg-gradient-event hover:shadow-glow-purple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 {loading ? (
                   <div className="flex items-center space-x-2">
@@ -166,7 +166,7 @@ const Login: React.FC = () => {
           <div className="mt-6 text-center">
             <Link
               to="/events"
-              className="text-primary-600 hover:text-primary-700 font-medium hover:underline transition-colors duration-200 text-sm sm:text-base"
+              className="text-gray-600 hover:text-gray-800 font-medium hover:underline transition-colors duration-200 text-sm sm:text-base"
             >
               ← Back to Events
             </Link>

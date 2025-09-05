@@ -34,30 +34,27 @@ const Events: React.FC = () => {
     });
   };
 
-  const getEventGradient = (index: number) => {
-    const gradients = [
-      'bg-gradient-event',
-      'bg-gradient-sunset', 
-      'bg-gradient-ocean',
-      'bg-gradient-forest'
-    ];
-    return gradients[index % gradients.length];
+  // Unified design system for all events - matches navigation styling
+  // TODO: When admin panel is implemented, this will support:
+  // - event.theme (predefined theme names)
+  // - event.brand_color (custom hex colors)
+  // - event.banner_image (KV banner images)
+  // - event.category (for icon selection)
+  const getEventTheme = (event: Event) => {
+    // Using the same gradient system as the navigation for consistency
+    return {
+      primary: 'bg-gradient-event',
+      secondary: 'bg-gradient-sunset',
+      accent: 'bg-gradient-ocean',
+      text: 'text-white',
+      button: 'bg-gradient-event hover:shadow-glow-purple'
+    };
   };
 
-  const getEventIcon = (eventName: string) => {
-    // Professional icons instead of emojis
-    const icons = [
-      'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', // Clock
-      'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z', // Location
-      'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', // Calendar
-      'M13 10V3L4 14h7v7l9-11h-7z', // Lightning
-      'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z', // Lightbulb
-      'M7 4V2a1 1 0 011-1h4a1 1 0 011 1v2m4 0V2a1 1 0 011-1h2a1 1 0 011 1v2m-4 0V2a1 1 0 011-1h2a1 1 0 011 1v2M7 4v16a1 1 0 001 1h10a1 1 0 001-1V4M7 4h10m0 0v16a1 1 0 01-1 1H8a1 1 0 01-1-1V4', // Briefcase
-      'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', // Book
-      'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' // Building
-    ];
-    const index = eventName.length % icons.length;
-    return icons[index];
+  const getEventIcon = (event: Event) => {
+    // Future: This will be event.icon or determined by event.category
+    // For now, use a consistent calendar icon for all events
+    return 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z';
   };
 
   if (loading) {
@@ -65,7 +62,7 @@ const Events: React.FC = () => {
       <Layout>
         <div className="flex justify-center items-center h-64">
           <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-event rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 bg-gradient-event rounded-full animate-spin mx-auto mb-4 shadow-glow-purple"></div>
             <div className="text-lg text-gray-600">Loading events...</div>
           </div>
         </div>
@@ -108,15 +105,17 @@ const Events: React.FC = () => {
 
         {/* Events Grid */}
         <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event, index) => (
+          {events.map((event, index) => {
+            const theme = getEventTheme(event);
+            return (
             <div
               key={event.id}
-              className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-slide-up"
+              className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-slide-up flex flex-col h-full border border-gray-100 hover:border-gray-200"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Event Header with Gradient - Future KV Banner Support */}
-              <div className={`${getEventGradient(index)} rounded-t-2xl p-6 text-white relative overflow-hidden`}>
-                {/* Future KV Banner Image - Currently using gradient as placeholder */}
+              {/* Event Header - Ready for KV Banner Support */}
+              <div className={`${theme.primary} rounded-t-2xl p-6 text-white relative overflow-hidden`}>
+                {/* Future KV Banner Image Support */}
                 {/* {event.banner_image && (
                   <img 
                     src={event.banner_image} 
@@ -125,13 +124,14 @@ const Events: React.FC = () => {
                   />
                 )} */}
                 
+                {/* Subtle decorative elements */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-12 translate-x-12"></div>
                 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={getEventIcon(event.name)} />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={getEventIcon(event)} />
                     </svg>
                     <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium">
                       #{event.id}
@@ -144,46 +144,62 @@ const Events: React.FC = () => {
               </div>
 
               {/* Event Content */}
-              <div className="p-4 sm:p-6">
+              <div className="p-4 sm:p-6 flex flex-col h-full">
                 {event.description && (
-                  <p className="text-gray-600 mb-6 line-clamp-3 leading-relaxed text-sm sm:text-base">
+                  <p className="text-gray-600 mb-4 sm:mb-6 line-clamp-3 leading-relaxed text-sm sm:text-base flex-grow">
                     {event.description}
                   </p>
                 )}
                 
-                <div className="space-y-3 sm:space-y-4 mb-6">
-                  <div className="flex items-center space-x-3 text-gray-700">
-                    <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                  <div className="flex items-center space-x-3 text-gray-700 group/item">
+                    <div className="w-8 h-8 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm group-hover/item:shadow-md transition-shadow duration-200">
                       <svg className="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <span className="font-medium text-sm sm:text-base">{formatDate(event.start_date)}</span>
+                    <span className="font-medium text-sm sm:text-base group-hover/item:text-primary-700 transition-colors duration-200">{formatDate(event.start_date)}</span>
                   </div>
                   
-                  <div className="flex items-center space-x-3 text-gray-700">
-                    <div className="w-8 h-8 bg-secondary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="flex items-center space-x-3 text-gray-700 group/item">
+                    <div className="w-8 h-8 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm group-hover/item:shadow-md transition-shadow duration-200">
                       <svg className="w-4 h-4 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
-                    <span className="font-medium text-sm sm:text-base">{event.location}</span>
+                    <span className="font-medium text-sm sm:text-base group-hover/item:text-secondary-700 transition-colors duration-200">{event.location}</span>
                   </div>
                 </div>
                 
                 <Link
                   to={`/events/${event.id}`}
-                  className="block w-full bg-gradient-event text-white text-center py-3 px-6 rounded-xl font-semibold hover:shadow-glow-purple transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
+                  className="group/btn relative block w-full overflow-hidden rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-glow-purple text-sm sm:text-base"
                 >
-                  View Details
+                  {/* Unified theme button background */}
+                  <div className={`absolute inset-0 ${theme.button} transition-all duration-300`}></div>
+                  
+                  {/* Subtle overlay for better text contrast */}
+                  <div className="absolute inset-0 bg-black/10 group-hover/btn:bg-black/5 transition-colors duration-300"></div>
+                  
+                  {/* Button content */}
+                  <div className="relative z-10 flex items-center justify-center space-x-2 py-3 px-6 text-white">
+                    <span>View Details</span>
+                    <svg className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                  
+                  {/* Shimmer effect on hover */}
+                  <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                 </Link>
               </div>
 
               {/* Hover Effect Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </div>
-          ))}
+            );
+          })}
         </div>
         
         {events.length === 0 && (
